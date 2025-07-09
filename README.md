@@ -1,1 +1,0 @@
-# stw-voting-system2
