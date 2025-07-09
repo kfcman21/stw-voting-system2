@@ -206,7 +206,7 @@ function getUserId() {
 // 관리자 확인
 function checkAdmin() {
     const password = document.getElementById('adminPassword').value;
-    if (password === '1234') { // 실제 환경에서는 더 안전한 인증 방식 사용
+    if (password === '1004') { // 실제 환경에서는 더 안전한 인증 방식 사용
         isAdmin = true;
         document.getElementById('resetBtn').style.display = 'inline-block';
         document.getElementById('adminPassword').style.display = 'none';
