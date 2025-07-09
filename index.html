@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>사회정서학습 S-T-W 실시간 투표</title>
+    <link rel="stylesheet" href="styles.css?v=1.0">
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js?v=1.0"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>사회정서학습 S-T-W 실시간 투표</h1>
+            <div class="admin-controls">
+                <input type="password" id="adminPassword" placeholder="관리자 비밀번호" maxlength="4">
+                <button onclick="checkAdmin()">관리자 로그인</button>
+                <button id="resetBtn" onclick="resetVotes()" style="display: none;">투표 초기화</button>
+                <button onclick="testEmpathyVote()" style="background: #ff6b6b; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">테스트 공감투표</button>
+            </div>
+        </header>
+
+        <div class="voting-sections">
+            <!-- SEE 섹션 -->
+            <section class="voting-section">
+                <h2>SEE (관찰) - 영상 속 수업에서 가장 먼저 눈에 띄는 장면은 무엇인가요?</h2>
+                
+                <!-- SEE 공감 투표 섹션 -->
+                <div class="empathy-voting-section">
+                    <h3>공감 투표</h3>
+                    <div class="empathy-options">
+                        <div class="empathy-option" onclick="empathyVote('see', 1)">
+                            <div class="empathy-number">1</div>
+                            <span class="empathy-text">영상 속 학생들이 미술 활동을 통해 자신의 감정을 표현하고 인식하고 있으며, 교실 분위기가 편안하고 안전해 보입니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-1">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 2)">
+                            <div class="empathy-number">2</div>
+                            <span class="empathy-text">학생들이 소그룹으로 모여 협력적인 탐구 활동을 하는 과정에서 작은 갈등 상황이 발생했으나, 학생들이 스스로 대화하며 해결하려고 노력합니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-2">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 3)">
+                            <div class="empathy-number">3</div>
+                            <span class="empathy-text">학생들이 '마음건강'에 대해 개방적으로 대화할 수 있는 분위기가 조성되어 있고, 교사가 학생들의 이야기를 경청하며 고개를 끄덕이는 모습이 보입니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-3">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 4)">
+                            <div class="empathy-number">4</div>
+                            <span class="empathy-text">학생들이 타인의 입장을 상상하거나 서로의 의견을 경청하며 공감하는 모습이 관찰됩니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-4">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 5)">
+                            <div class="empathy-number">5</div>
+                            <span class="empathy-text">학생들이 특정 문제 상황에 대해 토론하며 해결책을 모색하고, 각자의 의견을 논리적으로 제시하는 모습이 보입니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-5">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 6)">
+                            <div class="empathy-number">6</div>
+                            <span class="empathy-text">학생이 자신의 어려움을 이야기할 때 교사가 공감적으로 경청하고 고개를 끄덕이며 지지하는 모습이 두드러집니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-6">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 7)">
+                            <div class="empathy-number">7</div>
+                            <span class="empathy-text">교사가 수업 중 개념 관련 본질적 질문에 정서적 요소(예: '이 현상에 대해 어떻게 느끼나요?', '이 가치는 당신에게 어떤 의미인가요?')를 함께 제시하고 학생들이 깊이 있게 사고하는 모습이 관찰됩니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-7">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 8)">
+                            <div class="empathy-number">8</div>
+                            <span class="empathy-text">수업이 끝난 후 학생들이 자신의 학습 과정뿐만 아니라 그 과정에서 느낀 감정이나 생각을 기록하는 시간을 가집니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-8">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 9)">
+                            <div class="empathy-number">9</div>
+                            <span class="empathy-text">학생들이 교사의 지시를 기다리기보다 스스로 질문을 만들고 탐구 활동을 주도하며, 교사는 옆에서 조언을 해주는 역할을 합니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-9">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('see', 10)">
+                            <div class="empathy-number">10</div>
+                            <span class="empathy-text">학생들이 학습 내용을 자신의 지역사회나 더 큰 공동체에 어떻게 적용할 수 있을지 논의하거나, 특정 사회 문제에 대한 해결책을 브레인스토밍하는 모습이 보입니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-see-10">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results" id="see-results"></div>
+            </section>
+
+            <!-- THINK 섹션 -->
+            <section class="voting-section">
+                <h2>THINK (분석) - 교사와 학생은 각각 어떤 활동을 하고 있나요? 교사의 의도나 전략은 무엇이었을까요?</h2>
+                
+                <!-- THINK 공감 투표 섹션 -->
+                <div class="empathy-voting-section">
+                    <h3>공감 투표</h3>
+                    <div class="empathy-options">
+                        <div class="empathy-option" onclick="empathyVote('think', 1)">
+                            <div class="empathy-number">1</div>
+                            <span class="empathy-text">교사는 학생들이 안전하게 감정을 표현할 수 있는 심리적 안전망을 제공하고, 미술이라는 매개를 통해 자기 인식과 자기 관리 역량을 발달시키고자 하는 전략을 사용했습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-1">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 2)">
+                            <div class="empathy-number">2</div>
+                            <span class="empathy-text">교사는 갈등 상황을 사회정서 역량 함양의 기회로 활용하도록 의도적으로 협력적 탐구 활동을 설계하고, 학생들이 '관계 관리'(건강한 관계를 형성하고 갈등을 해결하기) 역량을 키울 수 있도록 조력하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-2">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 3)">
+                            <div class="empathy-number">3</div>
+                            <span class="empathy-text">교사는 한국형 SEL의 중요한 특징인 '마음건강(정신건강 인식 및 관리) 영역'을 강조하며, 학생들이 정신건강에 대한 편견을 줄이고 도움을 요청하는 것을 자연스럽게 여기도록 돕는 전략을 사용하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-3">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 4)">
+                            <div class="empathy-number">4</div>
+                            <span class="empathy-text">교사는 '사회적 인식'(타인의 입장을 공감하고 이해하기) 역량을 함양하기 위해 다양한 관점을 이해하고 공감하는 활동을 설계했습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-4">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 5)">
+                            <div class="empathy-number">5</div>
+                            <span class="empathy-text">교사는 학생들이 개인 행동과 사회적 상호작용에 대한 윤리적이고 건설적인 선택을 할 수 있도록 '책임 있는 의사결정' 역량을 연습시키는 전략을 사용하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-5">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 6)">
+                            <div class="empathy-number">6</div>
+                            <span class="empathy-text">교사는 단순히 지식을 전달하는 '기존 수업에서의 교사 역할'을 넘어 '정서적 지원자', '공감적 경청자', '관계 촉진자'로서의 새로운 역할을 수행하며, 학생이 자신의 감정을 안전하게 표현할 수 있는 '심리적 안전망'을 제공하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-6">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 7)">
+                            <div class="empathy-number">7</div>
+                            <span class="empathy-text">교사는 인지적 깊이와 사회정서적 성장을 동시에 추구하기 위해 개념기반 탐구학습과 한국형 사회정서학습을 융합적으로 적용하는 전략을 사용하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-7">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 8)">
+                            <div class="empathy-number">8</div>
+                            <span class="empathy-text">교사는 인지적 이해와 정서적 반응을 함께 성찰하는 습관을 만들도록 '성찰 루틴을 일상화'하는 전략을 사용하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-8">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 9)">
+                            <div class="empathy-number">9</div>
+                            <span class="empathy-text">교사는 지식 전달자에서 벗어나 '질문 촉진자', '탐구 조력자', '학습 설계자'로서의 새로운 역할을 수행하며, 학생들의 '자기 주도적 지식 탐색'을 통해 '개념적 이해'를 탐구하도록 합니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-9">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('think', 10)">
+                            <div class="empathy-number">10</div>
+                            <span class="empathy-text">교사는 한국형 SEL의 중요한 특징인 '공동체 역량 강조'를 목표로, 학생들이 '공공의 이익을 위한 사회적 책임감'을 육성하도록 돕는 전략을 사용하고 있습니다.</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-think-10">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="think-results"></div>
+            </section>
+
+            <!-- WONDER 섹션 -->
+            <section class="voting-section">
+                <h2>WONDER (궁금증/성찰) - 이 수업 방식은 학생에게 어떤 영향을 줄 수 있을까요? 내 교실에서도 실천할 수 있을까요?</h2>
+                
+                <!-- WONDER 공감 투표 섹션 -->
+                <div class="empathy-voting-section">
+                    <h3>공감 투표</h3>
+                    <div class="empathy-options">
+                        <div class="empathy-option" onclick="empathyVote('wonder', 1)">
+                            <div class="empathy-number">1</div>
+                            <span class="empathy-text">이러한 미술 활동 기반의 접근법이 학생들의 정서적 웰빙과 학업 스트레스 관리(마음건강)에 어떤 긍정적인 영향을 미칠까요? 비언어적 표현이 모든 학생의 감정 표출에 효과적일까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-1">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 2)">
+                            <div class="empathy-number">2</div>
+                            <span class="empathy-text">이러한 활동이 교실 내 긍정적인 또래 관계 형성에 어떻게 기여할까요? 우리 반에서도 학생들이 스스로 갈등을 해결하는 경험을 늘리려면 어떤 환경을 조성해야 할까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-2">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 3)">
+                            <div class="empathy-number">3</div>
+                            <span class="empathy-text">이러한 대화가 학생들의 높은 학업 스트레스와 정서적 어려움에 실제적인 도움을 줄 수 있을까요? 정신건강 관련 외부 자원과 연계하는 방안도 모색해야 할까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-3">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 4)">
+                            <div class="empathy-number">4</div>
+                            <span class="empathy-text">이러한 공감 활동이 학교폭력 및 사이버폭력 예방에 얼마나 효과적일까요? 특정 교과(예: 국어, 사회, 도덕)와 연계하여 진행하면 어떤 시너지를 얻을 수 있을까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-4">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 5)">
+                            <div class="empathy-number">5</div>
+                            <span class="empathy-text">이러한 의사결정 연습이 실제 생활에서 학생들이 더욱 책임감 있는 시민으로 성장하는 데 어떤 영향을 미칠까요? 토론 과정에서 발생하는 감정적 어려움(예: 의견 충돌)은 어떻게 지도해야 할까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-5">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 6)">
+                            <div class="empathy-number">6</div>
+                            <span class="empathy-text">교사가 이처럼 정서적 지원을 제공하는 것이 학생들의 학업 성취도나 학교 적응에 직접적인 영향을 미칠까요? 바쁜 학사 일정 속에서 개별 학생에게 충분한 정서적 지지를 제공하는 효율적인 방법은 무엇일까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-6">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 7)">
+                            <div class="empathy-number">7</div>
+                            <span class="empathy-text">이러한 통합적 접근이 학생들의 전인적 성장에 얼마나 효과적일까요? 모든 교과에서 이러한 통합이 가능할까요, 아니면 특정 교과에 더 적합할까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-7">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 8)">
+                            <div class="empathy-number">8</div>
+                            <span class="empathy-text">이러한 성찰 활동이 학생들의 자기 인식과 자기 관리 역량을 키우는 데 구체적으로 어떤 도움을 줄까요? 성찰의 깊이를 더하기 위해 교사는 어떤 피드백을 제공할 수 있을까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-8">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 9)">
+                            <div class="empathy-number">9</div>
+                            <span class="empathy-text">이처럼 학생 주도적인 학습 환경이 학생들의 자존감 향상과 학습 동기 부여에 얼마나 큰 영향을 미칠까요? 모든 학생들이 이러한 환경에 쉽게 적응할 수 있도록 교사는 어떤 추가적인 지원을 제공해야 할까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-9">0</span>
+                            </div>
+                        </div>
+                        <div class="empathy-option" onclick="empathyVote('wonder', 10)">
+                            <div class="empathy-number">10</div>
+                            <span class="empathy-text">이러한 활동이 학생들이 학교를 넘어 사회 구성원으로서의 역할과 책임을 인식하는 데 얼마나 실질적인 영향을 미칠까요? 실제 사회적 참여 기회를 학교 교육과정에 어떻게 효과적으로 통합할 수 있을까요?</span>
+                            <div class="empathy-heart">
+                                <span class="empathy-heart-icon">♡</span>
+                                <span class="empathy-count" id="empathy-count-wonder-10">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="results" id="wonder-results"></div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js?v=1.0"></script>
+</body>
+</html> 

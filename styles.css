@@ -1,0 +1,259 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.admin-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.admin-controls input {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 150px;
+}
+
+.admin-controls button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.admin-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.voting-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.voting-section {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.voting-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.empathy-voting-section {
+    margin-bottom: 30px;
+}
+
+.empathy-voting-section h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #667eea;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.empathy-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.empathy-option {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.empathy-option:hover {
+    background: #e9ecef;
+    border-color: #667eea;
+    transform: translateX(5px);
+}
+
+.empathy-option.voted {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    transform: translateX(10px);
+}
+
+.empathy-option.voted .empathy-number {
+    background: white;
+    color: #667eea;
+}
+
+.empathy-option.voted .empathy-heart-icon {
+    color: #ff6b6b;
+    animation: heartBeat 0.6s ease-in-out;
+}
+
+.empathy-number {
+    background: #667eea;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-right: 20px;
+    flex-shrink: 0;
+    font-size: 16px;
+}
+
+.empathy-text {
+    flex: 1;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.empathy-heart {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.empathy-heart-icon {
+    font-size: 20px;
+    color: #ccc;
+    transition: all 0.3s ease;
+}
+
+.empathy-count {
+    font-weight: 600;
+    color: #667eea;
+    min-width: 30px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.empathy-option.voted .empathy-count {
+    color: white;
+}
+
+.results {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    text-align: center;
+    color: #666;
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .voting-section {
+        padding: 20px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .admin-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .empathy-option {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .empathy-text {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .empathy-heart {
+        justify-content: center;
+    }
+    
+    .voting-section h2 {
+        font-size: 1.3rem;
+    }
+} 
